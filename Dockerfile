@@ -1,17 +1,17 @@
-FROM alpine:edge
-MAINTAINER Tim Haak <tim@haak.co>
+FROM cryptoplay/alpine:3.6
+MAINTAINER CryptoPlay <docker@cryptoplay.tk>
 
 ENV LANG="en_US.UTF-8" \
     LC_ALL="en_US.UTF-8" \
     LANGUAGE="en_US.UTF-8" \
     TERM="xterm"
 
-RUN apk -U upgrade && \
-    apk --update add \
-      mariadb mariadb-client \
-      && \
-      rm -rf /tmp/src && \
-      rm -rf /var/cache/apk/*
+RUN echo 'http://dl-4.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories \
+    && apk update \
+    && apk add --no-cache \
+    mariadb mariadb-client \
+    && rm -rf /tmp/src \ 
+    && rm -rf /var/cache/apk/*
 
 ADD ./my.cnf /etc/mysql/my.cnf
 ADD ./start.sh /start.sh
